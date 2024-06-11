@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd" >
+<configuration>
+	<!-- DB 연결 설정하는 파일 Connection 객체 생성할 때 필요한 정보를 설정	-->
+	<!-- 연결할 DB 정보를 설정하는 태그 -->
+	<properties resource="/driver.properties"></properties>
+	<settings>
+		<setting value="NULL" name="jdbcTypeForNull"/>
+		<!-- not null -->
+	</settings>
+	<!-- 사용할 클래스의 명칭에 별칭을 부여하는 태그	 -->
+	<typeAliases>
+		<typeAlias type="com.mybatis.model.dto.Employee" alias="emp"/>
+		<typeAlias type="com.mybatis.model.dto.Department" alias="department"/>
+		<typeAlias type="com.mybatis.model.dto.Member" alias="member"/>
+		<typeAlias type="com.mybatis.model.dto.Board" alias="board"/>
+		<typeAlias type="com.mybatis.model.dto.BoardComment" alias="comment"/>
+		<typeAlias type="com.mybatis.common.StringToArrayTypeHandler" alias="stringArr"/>
+	</typeAliases>
+	<environments default="mybatis">
+		<environment id="mybatis">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"/>
+				<property name="url" value="${url}"/>
+				<property name="username" value="${username}"/>
+				<property name="password" value="${password}"/>
+			</dataSource>
+		</environment>
+		<environment id="web">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="${driver}"></property>
+				<property name="url" value="${url}"></property>
+				<property name="username" value="WEB"></property>
+				<property name="password" value="WEB"></property>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<!-- sql 정보를 제공하는 mapper 파일 등록 -->
+	<mappers>
+		<mapper resource="/mappers/employee-mapper.xml"/>
+		<mapper resource="/mappers/member-mapper.xml"/>
+		<mapper resource="/mappers/board-mapper.xml"/>
+	</mappers>
+
+
+</configuration>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="board">
+	
+	<sql id="on">
+		on ${param1} = ${param2}
+	</sql>
+
+  	<resultMap type="board" id="boMap">
+		<id column="board_no" property="boardNo"/>
+		<result column="board_title" property="boardTitle"/>
+		<!-- <result column="board_writer" property="boardWriter"/> -->
+		<result column="board_content" property="boardContent"/>
+		<result column="board_original_filename" property="boardOriginalFilename"/>
+		<result column="board_renamed_filename" property="boardRenamedFilename"/>
+		<result column="board_date" property="boardDate"/>
+		<result column="board_readcount" property="boardReadcount"/>
+		<association property="boardWriter" resultMap="mem.memMap"></association>
+		<collection property="comments" ofType="comment">
+			<id column="board_comment_no" property="boardCommentNo"/>
+			<result column="board_comment_level" property="boardCommentLevel"/>
+			<result column="board_comment_writer" property="boardCommentWriter"/>
+			<result column="board_comment_content" property="boardCommentContent"/>
+			<result column="board_ref" property="boardRef"/>
+			<result column="board_comment_ref" property="boardCommentRef"/>
+			<result column="board_comment_date" property="boardCommentDate"/>
+		</collection>
+	</resultMap>
+	
+	<select id="searchboardall" resultMap="boMap">
+		SELECT * 
+			FROM BOARD LEFT JOIN BOARD_COMMENT ON BOARD_NO=BOARD_REF
+			JOIN MEMBER 
+			<include refid="on">
+				<property name="param1" value="USERID"/>
+				<property name="param2" value="BOARD_WRITER"/>
+			</include>
+			<!-- ON USERID=BOARD_WRITER -->
+		ORDER BY BOARD_DATE DESC
+	</select>
+	
+	
+	
+	
+</mapper>

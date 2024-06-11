@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="mem">
+
+	<!-- 자주 불러오는 컬럼들을 <include refid="basiccolumn"/> 써서 사용 가능 ! ! ! -->
+	<sql id="basiccolumn">
+		userid,username,email,phone,address,hobby,enrolldate
+	</sql>
+	
+	<sql id="on">
+		on ${param1} = ${param2}
+	</sql>
+	<resultMap type="member" id="memMap">
+		<id column="userid" property="userId"></id>
+		<result column="password" property="password"/>
+		<result column="username" property="userName"/>
+		<result column="gender" property="gender"/>
+		<result column="age" property="age"/>
+		<result column="phone" property="phone"/>
+		<result column="address" property="address"/>
+		<result column="hobby" property="hobby" typeHandler="stringArr"/>
+		<result column="enrolldate" property="enrollDate"/>
+	</resultMap>
+	
+	<select id="searchmemberall" resultMap="memMap">
+		SELECT <include refid="basiccolumn"/> FROM MEMBER ORDER BY ENROLLDATE DESC
+	</select>
+	
+	<insert id="insertMember" parameterType="member" >
+		INSERT INTO MEMBER VALUES(,,,,#{hobby typeHandler=stringArr})
+		<!-- insert 해줄 때 ~ Member에 대한 값 중 hobby는 배열형식이라 오라클에 매칭이 되지 않는다.
+		* 따라서 String[] -> String 으로 바꿔주는 setparameter 매소드를 포함하고 있는 typeHandler 를 이용해서 값을 넣어줘야 한당 -->
+	</insert>
+  
+</mapper>
